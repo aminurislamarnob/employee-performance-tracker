@@ -1,0 +1,56 @@
+.ept-full-width{
+    width: 100%;
+}
+.performance-tracker-field{
+    margin-bottom: 15px;
+}
+.performance-tracker-dates {
+    display: flex;
+    gap: 20px;
+}
+
+.performance-tracker-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.performance-tracker-field label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.performance-tracker-field input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.ui-datepicker {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.ui-datepicker a {
+    text-decoration: none;
+    color: #007cba;
+}
+.ui-datepicker .ui-datepicker-header {
+    background: #f1f1f1;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+.ui-datepicker .ui-state-default {
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    color: #333;
+}
+.ui-datepicker .ui-state-hover {
+    background: #007cba;
+    color: #fff;
+}
+.ui-datepicker .ui-state-active {
+    background: #007cba;
+    color: #fff;
+    border-color: #007cba;
+}

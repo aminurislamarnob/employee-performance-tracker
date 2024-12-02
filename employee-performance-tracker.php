@@ -9,7 +9,6 @@
  * Text Domain: employee-performance-tracker
  * WC requires at least: 5.0.0
  * Domain Path: /languages/
- * Requires Plugins: woocommerce, dokan-lite, dokan-pro
  * License: GPL2
  */
 use WeLabs\EmployeePerformanceTracker\EmployeePerformanceTracker;

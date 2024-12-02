@@ -34,11 +34,13 @@ class Assets {
      * @return void
      */
     public function register_scripts() {
-        $admin_script       = EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/script.js';
-        $frontend_script    = EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/frontend/script.js';
-
-        wp_register_script( 'employee_performance_tracker_admin_script', $admin_script, [], filemtime( EMPLOYEE_PERFORMANCE_TRACKER_DIR . '/assets/admin/script.js' ), true );
-        wp_register_script( 'employee_performance_tracker_script', $frontend_script, [], filemtime( EMPLOYEE_PERFORMANCE_TRACKER_DIR . '/assets/frontend/script.js' ), true );
+        
+        // Admin script.
+        wp_register_script( 'employee_performance_tracker_admin_script', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/script.js', [], EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_VERSION, true );
+        wp_register_script( 'select2_js', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/select2.min.js', ['jquery'], '4.1.0', true );
+        
+        // Frontend script.
+        wp_register_script( 'employee_performance_tracker_script', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/frontend/script.js', [], EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_VERSION, true );
     }
 
     /**
@@ -47,11 +49,12 @@ class Assets {
      * @return void
      */
     public function register_styles() {
-        $admin_style       = EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/style.css';
-        $frontend_style    = EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/frontend/style.css';
+        // Admin style.
+        wp_register_style( 'employee_performance_tracker_admin_style', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/style.css', [], EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_VERSION );
+        wp_register_style( 'select2_style', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/admin/select2.min.css', [], '4.1.0' );
 
-        wp_register_style( 'employee_performance_tracker_admin_style', $admin_style, [], filemtime( EMPLOYEE_PERFORMANCE_TRACKER_DIR . '/assets/admin/style.css' ) );
-        wp_register_style( 'employee_performance_tracker_style', $frontend_style, [], filemtime( EMPLOYEE_PERFORMANCE_TRACKER_DIR . '/assets/frontend/style.css' ) );
+        // Frontend style.
+        wp_register_style( 'employee_performance_tracker_style', EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_ASSET . '/frontend/style.css', [], EMPLOYEE_PERFORMANCE_TRACKER_PLUGIN_VERSION );
     }
 
     /**
@@ -59,11 +62,30 @@ class Assets {
      *
      * @return void
      */
-    public function enqueue_admin_scripts() {
+    public function enqueue_admin_scripts( $hook ) {
+        global $post_type;
+
+        wp_enqueue_style( 'employee_performance_tracker_admin_style' );
         wp_enqueue_script( 'employee_performance_tracker_admin_script' );
         wp_localize_script(
             'employee_performance_tracker_admin_script', 'Employee_Performance_Tracker_Admin', []
         );
+
+
+        if ( 'ept_project' === $post_type && ( 'post.php' === $hook || 'post-new.php' === $hook ) ) {
+            // Enqueue Select2
+            wp_enqueue_script( 'select2_js' );
+            wp_enqueue_style( 'select2_style' );
+            wp_localize_script(
+                'select2_js', 'Select2', [
+                    'assignee_placeholder' => __( 'Select assignee', 'employee-performance-tracker' ),
+                ]
+            );
+           
+            // Enqueue Datepicker
+            wp_enqueue_style( 'jquery-ui-datepicker' );
+            wp_enqueue_script( 'jquery-ui-datepicker' );
+        }
     }
 
     /**
