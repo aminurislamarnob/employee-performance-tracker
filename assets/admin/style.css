@@ -54,3 +54,48 @@
     color: #fff;
     border-color: #007cba;
 }
+.repeater-field {
+    margin-bottom: 20px;
+}
+
+.repeater-items .repeater-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.repeater-items .repeater-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.repeater-items .repeater-item input[type="url"],
+.repeater-items .repeater-item input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.repeater-items .repeater-item .remove-scope {
+    background-color: #dc3232;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#add-scope {
+    margin-top: 10px;
+}
+.performance-log-fields h3 {
+    margin-bottom: 10px;
+    background: #f6f7f7;
+    padding: 10px 20px;
+    font-size: 14px;
+}

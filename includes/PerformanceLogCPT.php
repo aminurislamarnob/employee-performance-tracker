@@ -8,6 +8,8 @@ class PerformanceLogCPT {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_cpt' ) );
 		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg_for_cpt' ), 10, 2 );
+		add_filter( 'manage_ept_performance_log_posts_columns', array( $this, 'add_columns' ) );
+		add_action( 'manage_ept_performance_log_posts_custom_column', array( $this, 'render_columns' ), 10, 2 );
 	}
 
 	/**
@@ -44,21 +46,63 @@ class PerformanceLogCPT {
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'menu_icon'          => 'dashicons-portfolio',
-			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
-			'show_in_rest'       => true, // Enables Gutenberg support
+			'supports'           => array( 'title', 'author', 'thumbnail' ),
+			'show_in_rest'       => true,
 		);
 
-		register_post_type( 'ept-performance-log', $args );
+		register_post_type( 'ept_performance_log', $args );
 	}
 
 	/**
 	 * Disable Gutenberg for the custom post type
 	 */
 	public function disable_gutenberg_for_cpt( $use_block_editor, $post_type ) {
-		if ( 'ept-performance-log' === $post_type ) {
+		if ( 'ept_performance_log' === $post_type ) {
 			return false;
 		}
 
 		return $use_block_editor;
+	}
+
+	/**
+	 * Add custom columns to the post list table
+	 */
+	public function add_columns( $columns ) {
+		// Add new columns
+		$new_columns = array(
+			'dev_start_date' => __( 'Start Date', 'employee-performance-tracker' ),
+			'dev_end_date'   => __( 'End Date', 'employee-performance-tracker' ),
+		);
+
+		// Extract the checkbox and title columns
+		$checkbox_column = array( 'cb' => $columns['cb'] );
+		$title_column    = array( 'title' => $columns['title'] );
+
+		// Unset extracted columns from the original array
+		unset( $columns['cb'], $columns['title'], $columns['comments'] );
+
+		// Change title
+		$columns['author'] = __( 'Created by', 'employee-performance-tracker' );
+		$columns['date']   = __( 'Created at', 'employee-performance-tracker' );
+
+		// Reorder columns: Checkbox -> Title -> Custom Columns -> Remaining Columns
+		return array_merge( $checkbox_column, $title_column, $new_columns, $columns );
+	}
+
+	/**
+	 * Render content for custom columns
+	 */
+	public function render_columns( $column, $post_id ) {
+		switch ( $column ) {
+			case 'dev_start_date':
+				$date = get_post_meta( $post_id, '_dev_start_date', true );
+				echo ! empty( $date ) ? esc_html( $date ) : __( 'N/A', 'employee-performance-tracker' );
+				break;
+
+			case 'dev_end_date':
+				$date = get_post_meta( $post_id, '_dev_end_date', true );
+				echo ! empty( $date ) ? esc_html( $date ) : __( 'N/A', 'employee-performance-tracker' );
+				break;
+		}
 	}
 }
