@@ -29,8 +29,7 @@
 		<?php
 			$selected_assignees = get_post_meta( $post->ID, '_assignees', true );
 			$selected_assignees = is_array( $selected_assignees ) ? $selected_assignees : array();
-			wp_nonce_field( 'save_metaboxes', 'performance_tracker_nonce' );
-			$users = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+			$users              = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
 		?>
 		<label for="project_assignees"><?php echo esc_html__( 'Select Assignees', 'employee-performance-tracker' ); ?></label>
 		<select class="regular-text ept-full-width" name="assignees[]" id="project_assignees" multiple="multiple">

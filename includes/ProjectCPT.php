@@ -46,8 +46,8 @@ class ProjectCPT {
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'menu_icon'          => 'dashicons-portfolio',
-			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
-			'show_in_rest'       => true, // Enables Gutenberg support
+			'supports'           => array( 'title', 'editor', 'author', 'thumbnail' ),
+			'show_in_rest'       => true,
 		);
 
 		register_post_type( 'ept_project', $args );

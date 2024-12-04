@@ -22,13 +22,30 @@ class ProjectMetaboxes {
 			'normal',
 			'high'
 		);
+		add_meta_box(
+			'project_kpa_metaboxes',
+			__( 'KPA Informations', 'employee-performance-tracker' ),
+			array( $this, 'render_project_kpa_metabox' ),
+			'ept_project',
+			'normal',
+			'high'
+		);
 	}
 
 	/**
 	 * Render the Project Metabox
 	 */
 	public function render_project_metabox( $post ) {
+		wp_nonce_field( 'save_metaboxes', 'performance_tracker_nonce' );
+
 		require welabs_employee_performance_tracker()->get_template( 'project-metaboxes.php' );
+	}
+
+	/**
+	 * Render the Project KPA Metabox
+	 */
+	public function render_project_kpa_metabox( $post ) {
+		require welabs_employee_performance_tracker()->get_template( 'project-kpa-metaboxes.php' );
 	}
 
 	/**
@@ -55,16 +72,9 @@ class ProjectMetaboxes {
 			delete_post_meta( $post_id, '_assignees' );
 		}
 
-		// Save Repository
-		if ( isset( $_POST['repository_link'] ) && is_array( $_POST['repository_link'] ) ) {
-			$repository_link = array_map( 'sanitize_text_field', $_POST['repository_link'] );
-			update_post_meta( $post_id, '_repository_link', $repository_link );
-		} else {
-			delete_post_meta( $post_id, '_repository_link' );
-		}
-
-		// Save Dates
+		// Save data from Project Metabox
 		$fields = array(
+			'repository_link'    => '_repository_link',
 			'project_start_date' => '_project_start_date',
 			'dev_delivery_date'  => '_dev_delivery_date',
 			'qa_delivery_date'   => '_qa_delivery_date',
@@ -76,6 +86,23 @@ class ProjectMetaboxes {
 			} else {
 				delete_post_meta( $post_id, $meta_key );
 			}
+		}
+
+		// Save repeater fields: KPA informations.
+		if ( isset( $_POST['kpa_entries'] ) && is_array( $_POST['kpa_entries'] ) ) {
+			$kpa_entries = array_map(
+				function ( $kpa ) {
+					return array(
+						'kpa_title'  => isset( $kpa['kpa_title'] ) ? sanitize_text_field( $kpa['kpa_title'] ) : '',
+						'kpa_weight' => isset( $kpa['kpa_weight'] ) ? sanitize_text_field( $kpa['kpa_weight'] ) : '',
+					);
+				},
+				$_POST['kpa_entries']
+			);
+
+			update_post_meta( $post_id, '_kpa_entries', $kpa_entries );
+		} else {
+			delete_post_meta( $post_id, '_kpa_entries' );
 		}
 	}
 }

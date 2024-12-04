@@ -163,12 +163,13 @@ final class EmployeePerformanceTracker {
 	 * @return void
 	 */
 	public function init_classes() {
-		$this->container['scripts']                          = new Assets();
-		$this->container['admin_menu']                       = new AdminMenu();
-		$this->container['project_cpt']                      = new ProjectCPT();
-		$this->container['project_metaboxes']                = new ProjectMetaboxes();
-		$this->container['employee_performance_log_cpt']     = new PerformanceLogCPT();
-		$this->container['employee_performance_log_metabox'] = new PerformanceLogMetabox();
+		$this->container['scripts']                           = new Assets();
+		$this->container['admin_menu']                        = new AdminMenu();
+		$this->container['project_cpt']                       = new ProjectCPT();
+		$this->container['project_metaboxes']                 = new ProjectMetaboxes();
+		$this->container['employee_performance_log_cpt']      = new PerformanceLogCPT();
+		$this->container['employee_key_performance_area_cpt'] = new KPACPT();
+		$this->container['employee_performance_log_metabox']  = new PerformanceLogMetabox();
 	}
 
 	/**
